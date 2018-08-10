@@ -1,0 +1,33 @@
+<?php
+/* 
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of Investigador
+ *
+ * @author nazir
+ */
+/*class Investigador {
+
+    // Atributos
+    public $IdInvestigador;
+    public $IdUsuario;
+    public $Nombres;
+    public $ApellidoPaterno;
+    public $ApellidoMaterno;
+    public $Direccion;
+    public $FechaNacimiento;
+    public $Sexo;
+    public $Estado;
+    public $Nacionalidad;
+    public $NombreUsuario;
+    
+    // Adicionales
+    public $RutaInvestigador;
+
+    // Objectos
+    public $Usuario;
+}*/
+?>

@@ -1,0 +1,84 @@
+<?php
+/**
+ * DBConnection
+ *
+ * Clase encargada de encapsular la funcionalidad y el acceso a la base
+ * de datos.
+ *
+ * @author Nazir Ortiz
+ * @email: naz.hack@gmail.com
+ * @fecha: 17/mar/2011
+ */
+
+include_once(PATH_CONF . "Logger.php") ;
+
+class DBConnection {
+
+    private $connection;
+
+    public function  __construct() {
+        
+    }
+
+    public static function GetInstance(){
+        if (empty($this))
+            return new DBConnection ();
+        else
+            return $this;
+    }
+
+    /*
+     * Inicia la conexion con la base de datos.
+     */
+    private function StartConnection(){
+        $this->connection = new mysqli(SERVER, USER, PASSWORD, DATABASE, PORT);
+
+        if (mysqli_connect_error()){
+            Logger::RegistrarMensaje("Error al conectar con mysql", mysqli_connect_error(), MessageLogger::$ERROR);
+            exit();
+        }
+    }
+
+    /*
+     * Ejecuta un query del tipo SELECT, DESCRIBE, SHOW que retorna un conjunto
+     * de resultados.
+     */
+    public function ExecuteQuery($query){
+        $this->StartConnection();
+
+        $result = $this->connection->query($query);
+        
+        if (!$result){
+            Logger::RegistrarMensaje("Query: [$query]", $this->connection->error, MessageLogger::$ERROR);
+            $this->CloseConnection();
+            exit();
+        }
+        
+        $this->CloseConnection();
+        return $result;
+    }
+
+    /*
+     * Ejecuta querys sin resultado INSERT, UPDATE, DELETE y retorna el ultimo id
+     * creado por una consulta INSERT.
+     */
+    public function ExecuteNonQuery($query){
+        $this->StartConnection();
+        
+        if(!$this->connection->query($query)){
+            Logger::RegistrarMensaje("Error al ejecutar la sentencia [$query]", $this->connection->error, MessageLogger::$ERROR);
+            $this->CloseConnection();
+            exit();
+        }
+        
+        $this->CloseConnection();
+    }
+
+    /*
+     * Cierra la conexion con la base de datos.
+     */
+    private function CloseConnection(){
+        $this->connection->close();
+    }
+}
+?>
